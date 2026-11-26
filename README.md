@@ -1,3 +1,29 @@
+# Agentes Tropi SaaS
+
+Repositorio independiente para convertir el motor de 35 agentes en una plataforma SaaS multiempresa. El proyecto original `klunderyami/agentes_tropi` permanece separado y no se modifica desde este repositorio.
+
+## Estado de implementación
+
+La rama `feature/saas-foundation-v1` contiene la primera base SaaS: autenticación SSR, organizaciones, perfiles empresariales, catálogo de 35 agentes (10 incluidos y 25 premium), permisos y políticas RLS.
+
+Antes de desplegar, sigue [la guía de la fundación SaaS](docs/SAAS_FOUNDATION.md). Las migraciones están destinadas a un proyecto Supabase nuevo e independiente; **no aplicarlas sobre la base de datos productiva anterior de Tropicaña**.
+
+## Desarrollo
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
+Configura `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` con las credenciales del proyecto Supabase nuevo. Nunca expongas claves service-role o secretas en variables `NEXT_PUBLIC_*`.
+
+---
+
+## Motor heredado de agentes
+
+El contenido original del repositorio se conserva como punto de partida: prompts, CLI y workflows. Las integraciones heredadas que leen tablas monocliente se mantienen desconectadas hasta migrarlas a consultas tenant-scoped con RLS. El endpoint WhatsApp antiguo está deshabilitado en esta rama para impedir el uso de credenciales globales compartidas.
+
 # 🧃 agentes_tropi — Orquestador Autónomo de Tropicaña
 
 Repositorio central de **Tropicaña**: la agencia autónoma de marketing, ventas e

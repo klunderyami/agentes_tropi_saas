@@ -1,21 +1,17 @@
-# === Credenciales y secretos (NUNCA subir) ===
+# Secrets
 .env
 .env.*
 !.env.example
+!.env.template
 
-# === Node ===
+# Node / Next.js
 node_modules/
-
-# === Logs / temporales ===
+.next/
+out/
 *.log
 npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# === n8n/Make local ===
+# Automation tooling
 .n8n/
-# === Next.js (dashboard admin) ===
-.next/
-out/
-package-lock.json
-

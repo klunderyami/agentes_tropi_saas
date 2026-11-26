@@ -1,8 +1,8 @@
 {
-  "name": "tropi-dashboard",
+  "name": "agentes-tropi-saas",
   "private": true,
-  "version": "0.1.0",
-  "description": "Panel de Control Privado de Tropicaña — monitoreo en vivo de agentes autónomos, chat/WhatsApp, pipeline B2B y métricas de ads.",
+  "version": "0.2.0",
+  "description": "Plataforma SaaS multiempresa para agentes de inteligencia artificial y automatización.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,6 +10,7 @@
     "agents": "node scripts/index.js"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.45.4",
     "clsx": "^2.1.1",
     "lucide-react": "^0.454.0",

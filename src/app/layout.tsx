@@ -3,11 +3,11 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Tropicaña Admin',
+    default: 'Agentes Tropi SaaS',
     template: '%s · Tropicaña Admin',
   },
   description:
-    'Panel de Control Privado de Tropicaña: monitoreo en vivo de agentes autónomos, chat/WhatsApp, pipeline B2B y métricas de ads.',
+    'Plataforma SaaS multiempresa para agentes de inteligencia artificial y automatización empresarial.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
