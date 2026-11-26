@@ -1,8 +1,14 @@
+import { redirect } from 'next/navigation';
 import { Sidebar } from '@/components/admin/Sidebar';
 import { Topbar } from '@/components/admin/Topbar';
 import { ToastProvider } from '@/components/admin/toast';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect('/login');
+
   return (
     <ToastProvider>
       <div className="flex min-h-screen">
