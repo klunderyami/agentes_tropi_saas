@@ -1,16 +1,19 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, type FormEvent } from 'react';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase';
 
 export default function LoginPage() {
-  const params = useSearchParams();
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  const [setupRequired, setSetupRequired] = useState(false);
+
+  useEffect(() => {
+    setSetupRequired(new URLSearchParams(window.location.search).get('setup') === 'supabase');
+  }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,7 +39,8 @@ export default function LoginPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        window.location.assign(params.get('next') || '/admin');
+        const requested = new URLSearchParams(window.location.search).get('next') || '/admin';
+        window.location.assign(requested.startsWith('/') && !requested.startsWith('//') ? requested : '/admin');
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'No fue posible completar el acceso.');
@@ -54,7 +58,7 @@ export default function LoginPage() {
           <h1 className="mt-2 text-2xl font-bold text-brand-tierra">{mode === 'login' ? 'Bienvenido de nuevo' : 'Crea tu espacio de trabajo'}</h1>
           <p className="mt-2 text-sm text-stone-600">Inteligencia y automatización para tu negocio.</p>
         </div>
-        {params.get('setup') === 'supabase' && <p className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">La autenticación requiere configurar primero el proyecto Supabase del SaaS.</p>}
+        {setupRequired && <p className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">La autenticación requiere configurar primero el proyecto Supabase del SaaS.</p>}
         <form onSubmit={submit} className="space-y-4">
           <label className="block text-sm font-medium text-stone-700">Correo electrónico
             <input type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-brand-green" />
