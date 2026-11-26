@@ -1,29 +1,13 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createBrowserClient, type SupabaseClient } from '@supabase/ssr';
 
-/**
- * Cliente Supabase del dashboard (cliente de navegador).
- *
- * Se inicializa de forma perezosa (lazy) y SOLO si existen las variables
- * públicas NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.
- * Si no están configuradas, los módulos del dashboard caen en "modo demo"
- * con datos de ejemplo, por lo que el build y el render nunca se rompen.
- */
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+export const isSupabaseConfigured = Boolean(url && key);
+let browserClient: SupabaseClient | undefined;
 
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
-
-let cached: SupabaseClient | null | undefined;
-
+/** Cliente de navegador con sesión persistida en cookies compatibles con SSR. */
 export function getSupabaseClient(): SupabaseClient | null {
   if (!isSupabaseConfigured) return null;
-  if (cached !== undefined) return cached;
-  cached = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-    },
-  });
-  return cached;
+  browserClient ??= createBrowserClient(url, key);
+  return browserClient;
 }
