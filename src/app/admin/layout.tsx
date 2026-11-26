@@ -4,6 +4,9 @@ import { Topbar } from '@/components/admin/Topbar';
 import { ToastProvider } from '@/components/admin/toast';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
+// El área privada depende de cookies y sesión: nunca debe generarse estáticamente.
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
